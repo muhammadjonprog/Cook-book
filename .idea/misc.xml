@@ -3,7 +3,31 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/saidov/Programmer Language/Android/Cookbook/app/src/main/res/layout/activity_main.xml" value="0.75" />
+        <entry key="..\:/saidov/Programmer Language/Android/Cookbook/app/src/main/res/drawable-v24/bg_round.xml" value="0.1" />
+        <entry key="..\:/saidov/Programmer Language/Android/Cookbook/app/src/main/res/drawable-v24/ic_favorite_det.xml" value="0.1" />
+        <entry key="..\:/saidov/Programmer Language/Android/Cookbook/app/src/main/res/drawable/bg_round.xml" value="0.1" />
+        <entry key="..\:/saidov/Programmer Language/Android/Cookbook/app/src/main/res/drawable/chceckbox.xml" value="0.147" />
+        <entry key="..\:/saidov/Programmer Language/Android/Cookbook/app/src/main/res/drawable/checkbox.xml" value="0.21" />
+        <entry key="..\:/saidov/Programmer Language/Android/Cookbook/app/src/main/res/drawable/ic_checkbox_check.xml" value="0.147" />
+        <entry key="..\:/saidov/Programmer Language/Android/Cookbook/app/src/main/res/drawable/ic_checkbox_unchecked.xml" value="0.147" />
+        <entry key="..\:/saidov/Programmer Language/Android/Cookbook/app/src/main/res/drawable/ic_favorite_24.xml" value="0.1295" />
+        <entry key="..\:/saidov/Programmer Language/Android/Cookbook/app/src/main/res/drawable/ic_settings_24.xml" value="0.147" />
+        <entry key="..\:/saidov/Programmer Language/Android/Cookbook/app/src/main/res/drawable/ic_uncheck.xml" value="0.147" />
+        <entry key="..\:/saidov/Programmer Language/Android/Cookbook/app/src/main/res/layout/activity_main.xml" value="0.21" />
+        <entry key="..\:/saidov/Programmer Language/Android/Cookbook/app/src/main/res/layout/checkbox_item.xml" value="0.33" />
+        <entry key="..\:/saidov/Programmer Language/Android/Cookbook/app/src/main/res/layout/cocktail_item.xml" value="0.25" />
+        <entry key="..\:/saidov/Programmer Language/Android/Cookbook/app/src/main/res/layout/drink_item.xml" value="0.33" />
+        <entry key="..\:/saidov/Programmer Language/Android/Cookbook/app/src/main/res/layout/drink_item_var2.xml" value="0.19948717948717948" />
+        <entry key="..\:/saidov/Programmer Language/Android/Cookbook/app/src/main/res/layout/fragment_category.xml" value="0.22" />
+        <entry key="..\:/saidov/Programmer Language/Android/Cookbook/app/src/main/res/layout/fragment_detail.xml" value="0.20260416666666667" />
+        <entry key="..\:/saidov/Programmer Language/Android/Cookbook/app/src/main/res/layout/fragment_details.xml" value="0.15" />
+        <entry key="..\:/saidov/Programmer Language/Android/Cookbook/app/src/main/res/layout/fragment_favorite.xml" value="0.20260416666666667" />
+        <entry key="..\:/saidov/Programmer Language/Android/Cookbook/app/src/main/res/layout/fragment_history.xml" value="0.25" />
+        <entry key="..\:/saidov/Programmer Language/Android/Cookbook/app/src/main/res/layout/fragment_settings.xml" value="0.67" />
+        <entry key="..\:/saidov/Programmer Language/Android/Cookbook/app/src/main/res/layout/fragment_viewpager.xml" value="0.33" />
+        <entry key="..\:/saidov/Programmer Language/Android/Cookbook/app/src/main/res/layout/fragment_viewpager_news.xml" value="0.20260416666666667" />
+        <entry key="..\:/saidov/Programmer Language/Android/Cookbook/app/src/main/res/menu/add_favorite.xml" value="0.19948717948717948" />
+        <entry key="..\:/saidov/Programmer Language/Android/Cookbook/app/src/main/res/menu/menu_action_bar.xml" value="0.33" />
       </map>
     </option>
   </component>

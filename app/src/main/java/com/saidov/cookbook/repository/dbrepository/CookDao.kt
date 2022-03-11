@@ -7,6 +7,7 @@ import androidx.room.Dao
  * saidov.developer@gmail.com
  * http://muhammad.com/
  */
-@Dao
-interface CookDao {
-}
+//
+//@Dao
+//interface CookDao {
+//}

@@ -8,5 +8,5 @@ import androidx.fragment.app.Fragment
  * saidov.developer@gmail.com
  * http://muhammad.com/
  */
-class BaseFragment(@LayoutRes n: Int): Fragment(n) {
+abstract class BaseFragment(@LayoutRes n: Int): Fragment(n) {
 }

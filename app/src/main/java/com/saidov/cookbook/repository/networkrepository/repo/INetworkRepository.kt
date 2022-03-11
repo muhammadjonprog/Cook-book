@@ -1,6 +1,6 @@
 package com.saidov.cookbook.repository.networkrepository.repo
 
-import com.saidov.cookbook.repository.networkrepository.api.CookService
+import com.saidov.cookbook.repository.networkrepository.api.DrinkService
 
 
 /**
@@ -8,8 +8,9 @@ import com.saidov.cookbook.repository.networkrepository.api.CookService
  * saidov.developer@gmail.com
  * http://muhammad.com/
  */
+
 interface INetworkRepository {
 
-    fun getApi(): CookService
+    fun getApi(): DrinkService
 
 }

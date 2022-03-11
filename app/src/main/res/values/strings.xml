@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">Cook book</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="category">Category</string>
+    <string name="history">History</string>
+    <string name="favorite">Favorite</string>
+    <string name="settings">Settings</string>
+    <string name="textCategory">Select the drink categories you want to see on the main screen.</string>
+    <string name="add_favorite">Add to favorites</string>
+    <string name="categoryDetails"></string>
 </resources>

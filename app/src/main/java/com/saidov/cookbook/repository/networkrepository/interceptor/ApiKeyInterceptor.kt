@@ -9,7 +9,6 @@ import okhttp3.Response
  * http://muhammad.com/
  */
 class ApiKeyInterceptor : Interceptor {
-
     override fun intercept(chain: Interceptor.Chain): Response {
         TODO("Not yet implemented")
     }

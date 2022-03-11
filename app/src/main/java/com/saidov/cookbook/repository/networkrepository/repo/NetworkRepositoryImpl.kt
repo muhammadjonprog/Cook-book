@@ -1,7 +1,7 @@
 package com.saidov.cookbook.repository.networkrepository.repo
 
 import com.saidov.cookbook.other.Constants.Companion.BASE_URL
-import com.saidov.cookbook.repository.networkrepository.api.CookService
+import com.saidov.cookbook.repository.networkrepository.api.DrinkService
 import com.saidov.cookbook.repository.networkrepository.interceptor.ApiKeyInterceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -23,18 +23,17 @@ class NetworkRepositoryImpl() : INetworkRepository {
         val client = OkHttpClient
             .Builder()
             .addInterceptor(logging)
-            .addNetworkInterceptor(ApiKeyInterceptor())
             .build()
         return client
     }
 
-    override fun getApi(): CookService {
+    override fun getApi(): DrinkService {
         val retrofit = Retrofit.Builder()
             .baseUrl(BASE_URL)
             .client(getClient())
             .addConverterFactory(GsonConverterFactory.create())
             .build()
-            .create(CookService::class.java)
+            .create(DrinkService::class.java)
         return retrofit
     }
 }
