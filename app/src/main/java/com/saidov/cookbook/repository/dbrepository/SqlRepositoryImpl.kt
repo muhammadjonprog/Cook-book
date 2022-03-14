@@ -23,11 +23,6 @@ class SqlRepositoryImpl(private val appDatabase: AppDatabase) : ISqlRepository {
     override suspend fun updateFav(drinkModel: DrinkModel) =
         appDatabase.getDrinkDao().updateFav(drinkModel)
 
-    override suspend fun updateHis(drinkModel: DrinkModel) =
-        appDatabase.getDrinkDao().updateHis(drinkModel)
-
-
-
     override suspend fun delete(drinkModel: DrinkModel) =
         appDatabase.getDrinkDao().delete(drinkModel)
 

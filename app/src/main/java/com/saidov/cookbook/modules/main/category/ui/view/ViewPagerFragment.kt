@@ -7,6 +7,7 @@ import android.view.View
 import android.widget.ProgressBar
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -23,6 +24,7 @@ import com.saidov.cookbook.modules.main.ui.model.DrinkModel
 
 import com.saidov.cookbook.modules.main.ui.vm.SharedViewModel
 import com.saidov.cookbook.repository.networkrepository.event.Status
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class ViewPagerFragment() : BaseFragment(R.layout.fragment_viewpager),
     View.OnClickListener, View.OnLongClickListener,
@@ -31,11 +33,14 @@ class ViewPagerFragment() : BaseFragment(R.layout.fragment_viewpager),
     lateinit var recyclerView: RecyclerView
     lateinit var progressBar: ProgressBar
     private var category: String = ""
+
     private val viewModel: SharedViewModel by activityViewModels()
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         initData(view)
         initObservers(view)
+
     }
 
     private fun initData(view: View) {
@@ -70,7 +75,10 @@ class ViewPagerFragment() : BaseFragment(R.layout.fragment_viewpager),
                 }
             }
         })
+
+        if (viewModel.drinkLiveDataMap[category]?.value==null){
         viewModel.drinkByCategory(category)
+        }
     }
 
     private fun hideProgressBar() {

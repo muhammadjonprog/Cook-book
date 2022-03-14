@@ -122,13 +122,6 @@ class SharedViewModel : BaseViewModel() {
 
 
 
-    fun updateHis(drinkModel: DrinkModel) {
-        viewModelScope.launch(Dispatchers.IO) {
-            db.updateHis(drinkModel)
-            loadHistory()
-        }
-    }
-
 
     fun search(query: String) {
         viewModelScope.launch(Dispatchers.IO) {

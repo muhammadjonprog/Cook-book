@@ -4,9 +4,11 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
@@ -19,7 +21,7 @@ import com.saidov.cookbook.repository.networkrepository.event.Status
 
 class DetailsFragment : BaseFragment(R.layout.fragment_details), View.OnClickListener {
 
-    private val viewModel: SharedViewModel by activityViewModels()
+    private lateinit var viewModel: SharedViewModel
     private var onToolBarChangedListener: OnToolBarChangedListener? = null
     private lateinit var imageDrink: ImageView
     private lateinit var titleDrink: TextView
@@ -30,6 +32,7 @@ class DetailsFragment : BaseFragment(R.layout.fragment_details), View.OnClickLis
     private lateinit var measure1: TextView
     private lateinit var publishDrink: TextView
     private lateinit var alcoholicDrink: TextView
+    private lateinit var progressBar: ProgressBar
 
     private lateinit var floatingActionButton: FloatingActionButton
     private var idDrink: Long = 0
@@ -37,7 +40,7 @@ class DetailsFragment : BaseFragment(R.layout.fragment_details), View.OnClickLis
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
+        progressBar = view.findViewById(R.id.progressBar)
         floatingActionButton = view.findViewById(R.id.floatingActionButton)
         imageDrink = view.findViewById(R.id.imageViewDetail)
         titleDrink = view.findViewById(R.id.titleDrink)
@@ -49,6 +52,7 @@ class DetailsFragment : BaseFragment(R.layout.fragment_details), View.OnClickLis
         alcoholicDrink = view.findViewById(R.id.alcoholicDrink)
         publishDrink = view.findViewById(R.id.publishDrink)
 
+        viewModel = ViewModelProvider(this)[SharedViewModel::class.java]
         initObservers(view)
 
         floatingActionButton.setOnClickListener(this)
@@ -63,7 +67,7 @@ class DetailsFragment : BaseFragment(R.layout.fragment_details), View.OnClickLis
             when (response.status) {
                 Status.SUCCESS -> {
                     response.data?.let { drinkResponse ->
-
+                        hideProgressBar()
                         Glide.with(requireActivity())
                             .load(drinkResponse.list[0].strDrinkThumb)
                             .into(imageDrink)
@@ -82,24 +86,29 @@ class DetailsFragment : BaseFragment(R.layout.fragment_details), View.OnClickLis
                                 "\n" + "${drinkResponse.list[0].strMeasure2}"
                         "\n" + "${drinkResponse.list[0].strMeasure3}"
                         publishDrink.text = "Published: ${drinkResponse.list.get(0).dateModified}"
-
                     }
                 }
                 Status.ERROR -> {
-
+                    hideProgressBar()
                     response.error?.let { message ->
                         Snackbar.make(view, "Ошибка : $message", Snackbar.LENGTH_LONG).show()
                     }
                 }
                 Status.LOADING -> {
-
+                    showProgressBar()
                 }
             }
         })
 
         viewModel.drinkById(id = idDrink)
     }
+    private fun hideProgressBar() {
+        progressBar.visibility = View.INVISIBLE
+    }
 
+    private fun showProgressBar() {
+        progressBar.visibility = View.VISIBLE
+    }
 
     override fun onClick(v: View?) {
 

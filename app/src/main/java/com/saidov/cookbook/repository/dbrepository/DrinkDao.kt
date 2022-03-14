@@ -29,9 +29,6 @@ interface DrinkDao {
     @Update
     suspend fun updateFav(drinkModel: DrinkModel)
 
-    @Update
-    suspend fun updateHis(drinkModel: DrinkModel)
-
     @Delete
     suspend fun delete(drinkModel: DrinkModel)
 

@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.saidov.cookbook.modules.main.ui.model.DrinkResponse
 import com.saidov.cookbook.repository.dbrepository.ISqlRepository
 import com.saidov.cookbook.repository.networkrepository.event.Event
 import com.saidov.cookbook.repository.networkrepository.repo.INetworkRepository
@@ -41,14 +42,14 @@ abstract class BaseViewModel : ViewModel(), KoinComponent {
                 val response = request.invoke()
                 if (response.isSuccessful) {
                     response.body()?.let {
-                        liveData?.postValue(Event.success(it))
+                            liveData?.postValue(Event.success(it))
                     }
                 }
             } catch (t: Throwable) {
                 when (t) {
-//                    is SocketTimeoutException -> liveData?.value = Event.error(null,"Тайм аут!")
-//                    is ConnectException -> liveData?.value = Event.error(null,"Ошибка подключения!")
-//                    is IOException -> liveData?.value = Event.error(null,"Нет подключение к интернету!")
+                    is SocketTimeoutException -> liveData?.value = Event.error(null,"Тайм аут!")
+                    is ConnectException -> liveData?.value = Event.error(null,"Ошибка подключения!")
+                    is IOException -> liveData?.value = Event.error(null,"Нет подключение к интернету!")
 
                 }
             }

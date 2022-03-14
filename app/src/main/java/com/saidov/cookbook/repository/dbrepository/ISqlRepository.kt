@@ -17,7 +17,6 @@ interface ISqlRepository {
     suspend fun getAllFav(): List<DrinkModel>
 
     suspend fun updateFav(drinkModel: DrinkModel)
-    suspend fun updateHis(drinkModel: DrinkModel)
 
     suspend fun delete(drinkModel: DrinkModel)
 
