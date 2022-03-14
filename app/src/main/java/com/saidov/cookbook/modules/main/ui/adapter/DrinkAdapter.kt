@@ -1,5 +1,6 @@
 package com.saidov.cookbook.modules.main.ui.adapter
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,10 +19,12 @@ import com.saidov.cookbook.modules.main.ui.model.DrinkModel
  * http://muhammad.com/
  */
 class DrinkAdapter(
-    val onClickListener: View.OnClickListener) :
+    val onClickListener: View.OnClickListener,
+    val onLongClickListener: View.OnLongClickListener
+) :
     RecyclerView.Adapter<DrinkAdapter.MyViewHolder>() {
 
-    inner class MyViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
+    inner class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val itemTitle: TextView = itemView.findViewById<TextView>(R.id.itemTitleDrink)
 
         private val itemImage: ImageView = itemView.findViewById<ImageView>(R.id.imageDrink)
@@ -36,6 +39,7 @@ class DrinkAdapter(
                 .into(itemImage)
 
             itemView.setOnClickListener(onClickListener)
+            itemView.setOnLongClickListener(onLongClickListener)
 
             itemView.tag = drink
         }
@@ -46,6 +50,7 @@ class DrinkAdapter(
             return oldItem.idDrink == newItem.idDrink
         }
 
+        @SuppressLint("DiffUtilEquals")
         override fun areContentsTheSame(oldItem: DrinkModel, newItem: DrinkModel): Boolean {
             return oldItem == newItem
         }
@@ -55,7 +60,7 @@ class DrinkAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.drink_item,parent,false)
+            .inflate(R.layout.drink_item, parent, false)
         return MyViewHolder(view)
     }
 

@@ -1,5 +1,7 @@
 package com.saidov.cookbook.modules.main.ui.model
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 
 /**
@@ -7,20 +9,15 @@ import com.google.gson.annotations.SerializedName
  * saidov.developer@gmail.com
  * http://muhammad.com/
  */
-
-data class DrinkModel(
-    @SerializedName("idDrink") var idDrink: Long?,
-    @SerializedName("strAlcoholic") var strAlcoholic: String,
-    @SerializedName("strCategory") var strCategory: String,
-    @SerializedName("strCreativeCommonsConfirmed") var strCreativeCommonsConfirmed: String,
-    @SerializedName("strDrink") var strDrink: String,
-    @SerializedName("strDrinkAlternate") var strDrinkAlternate: String?,
-    @SerializedName("strDrinkThumb") var strDrinkThumb: String, // https://www.thecocktaildb.com/images/media/drink/5noda61589575158.jpg
-    @SerializedName("strGlass") var strGlass: String,
-    @SerializedName("strIBA") var strIBA: String?,
-    @SerializedName("strImageAttribution") var strImageAttribution: String?,
-    @SerializedName("strImageSource") var strImageSource: String?, // https://commons.wikimedia.org/wiki/File:Klassiche_Margarita.jpg
-    @SerializedName("strTags") var strTags: String?,
+@Entity(tableName = "drink")
+ class DrinkModel(
+    @PrimaryKey(autoGenerate = true)
+    @SerializedName("idDrink")  var idDrink: Long?,
+    @SerializedName("strAlcoholic") var strAlcoholic: String?,
+    @SerializedName("strCategory") var strCategory: String?,
+    @SerializedName("strDrink") var strDrink: String?,
+    @SerializedName("strDrinkThumb") var strDrinkThumb: String?,
+    @SerializedName("strGlass") var strGlass: String?,
     @SerializedName("strInstructions") var strInstructions: String?,
     @SerializedName("strVideo") var strVideo: String?,
     @SerializedName("strIngredient1") var strIngredient1: String?,
@@ -31,6 +28,6 @@ data class DrinkModel(
     @SerializedName("strMeasure1") var strMeasure1: String?,
     @SerializedName("strMeasure2") var strMeasure2: String?,
     @SerializedName("strMeasure3") var strMeasure3: String?,
-
-    @SerializedName("dateModified") var dateModified: String?
+    @SerializedName("dateModified") var dateModified: String?,
+    var isFavorite: Boolean = false
 )

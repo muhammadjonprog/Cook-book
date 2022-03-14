@@ -12,18 +12,21 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.saidov.cookbook.R
+import com.saidov.cookbook.core.callback.OnSearchListener
 import com.saidov.cookbook.core.callback.OnToolBarChangedListener
 
 import com.saidov.cookbook.core.fragment.BaseFragment
+import com.saidov.cookbook.modules.main.category.details.DetailsDBFragment.Companion.TAG
 import com.saidov.cookbook.modules.main.category.details.DetailsFragment
 import com.saidov.cookbook.modules.main.ui.adapter.DrinkAdapter
 import com.saidov.cookbook.modules.main.ui.model.DrinkModel
 
 import com.saidov.cookbook.modules.main.ui.vm.SharedViewModel
-import com.saidov.cookbook.repository.networkrepository.event.Resource
+import com.saidov.cookbook.repository.networkrepository.event.Status
 
 class ViewPagerFragment() : BaseFragment(R.layout.fragment_viewpager),
-    View.OnClickListener, OnToolBarChangedListener {
+    View.OnClickListener, View.OnLongClickListener,
+    OnToolBarChangedListener, OnSearchListener {
     lateinit var drinkAdapter: DrinkAdapter
     lateinit var recyclerView: RecyclerView
     lateinit var progressBar: ProgressBar
@@ -36,37 +39,38 @@ class ViewPagerFragment() : BaseFragment(R.layout.fragment_viewpager),
     }
 
     private fun initData(view: View) {
-        recyclerView = view.findViewById<RecyclerView>(R.id.recyclerViewDrink)
+        recyclerView = view.findViewById(R.id.recyclerViewDrink)
         progressBar = view.findViewById(R.id.pbDrink)
         val manager: LinearLayoutManager = GridLayoutManager(context, 2)
         recyclerView.layoutManager = manager
-        drinkAdapter = DrinkAdapter(this)
+        drinkAdapter = DrinkAdapter(this, this)
         recyclerView.adapter = drinkAdapter
     }
 
     private fun initObservers(view: View) {
         viewModel.drinkLiveDataMap[category]?.observe(viewLifecycleOwner, Observer { response ->
-            when (response) {
-                is Resource.Success -> {
+            when (response.status) {
+                Status.SUCCESS -> {
+                    Log.d(TAG, "Success")
                     hideProgressBar()
                     response.data?.let { drinkResponse ->
                         drinkAdapter.differ.submitList(drinkResponse.list)
-                        // Log.d("Drinksize", drinkResponse.list.get(0).toString())
                     }
                 }
-                is Resource.Error -> {
+                Status.ERROR -> {
+                    Log.d(TAG, "Error")
                     hideProgressBar()
-                    response.message?.let { message ->
+                    response.error?.let { message ->
                         Snackbar.make(view, "Ошибка : $message", Snackbar.LENGTH_LONG).show()
                     }
                 }
-                is Resource.Loading -> {
+                Status.LOADING -> {
+                    Log.d(TAG, "Loading ")
                     showProgressBar()
                 }
             }
         })
         viewModel.drinkByCategory(category)
-
     }
 
     private fun hideProgressBar() {
@@ -75,7 +79,6 @@ class ViewPagerFragment() : BaseFragment(R.layout.fragment_viewpager),
 
     private fun showProgressBar() {
         progressBar.visibility = View.VISIBLE
-
     }
 
 
@@ -95,9 +98,9 @@ class ViewPagerFragment() : BaseFragment(R.layout.fragment_viewpager),
         v?.let {
             val drink = it.tag as DrinkModel
             sendData(drink)
+            viewModel.add(drink)
         }
     }
-
 
 
     override fun setToolbarName(title: String) {
@@ -118,6 +121,17 @@ class ViewPagerFragment() : BaseFragment(R.layout.fragment_viewpager),
             fragment.category = category
             return fragment
         }
+    }
+
+    override fun onSearch(query: String) {
+        if (query.isEmpty()) {
+            viewModel.drinkByCategory(category)
+        }
+        viewModel.searchByDrinkName(query = query, category = category)
+    }
+
+    override fun onLongClick(p0: View?): Boolean {
+        return true
     }
 
 }

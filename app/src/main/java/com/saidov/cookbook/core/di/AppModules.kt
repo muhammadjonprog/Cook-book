@@ -1,6 +1,9 @@
 package com.saidov.cookbook.core.di
 
 import com.saidov.cookbook.modules.main.ui.vm.SharedViewModel
+import com.saidov.cookbook.repository.dbrepository.AppDatabase
+import com.saidov.cookbook.repository.dbrepository.ISqlRepository
+import com.saidov.cookbook.repository.dbrepository.SqlRepositoryImpl
 import com.saidov.cookbook.repository.networkrepository.repo.INetworkRepository
 import com.saidov.cookbook.repository.networkrepository.repo.NetworkRepositoryImpl
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -18,9 +21,9 @@ val vmModule = module {
 }
 
 val repositoryModule = module {
-//    single<ISqlRepository> {
-//        SqlRepositoryImpl(context = get())
-//    }
+    single<ISqlRepository> {
+        SqlRepositoryImpl(AppDatabase.invoke(get()))
+    }
 
     single<INetworkRepository> {
         NetworkRepositoryImpl()

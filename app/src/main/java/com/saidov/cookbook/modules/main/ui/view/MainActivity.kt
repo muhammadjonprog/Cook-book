@@ -2,13 +2,16 @@ package com.saidov.cookbook.modules.main.ui.view
 
 import android.os.Bundle
 import android.view.Menu
+import android.view.MenuInflater
 import android.view.MenuItem
-import android.widget.SearchView
+import android.view.View
 import android.widget.Toast
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.saidov.cookbook.R
 import com.saidov.cookbook.core.activity.BaseActivity
+import com.saidov.cookbook.core.callback.OnSearchListener
 import com.saidov.cookbook.core.callback.OnToolBarChangedListener
 import com.saidov.cookbook.modules.main.category.ui.view.CategoryFragment
 import com.saidov.cookbook.modules.main.favorites.FavoritesFragment
@@ -32,13 +35,13 @@ class MainActivity : BaseActivity(), SearchView.OnQueryTextListener,
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.menu_action_bar,menu)
-//        val inflater: MenuInflater = menuInflater
-//        inflater.inflate(R.menu.menu_action_bar, menu)
-//        val menuItem: MenuItem? = menu.findItem(R.id.menu_search)
-//        val view: View? = menuItem?.actionView
-//        searchView = view as SearchView
-//        searchView.setOnQueryTextListener(this)
+        //menuInflater.inflate(R.menu.menu_action_bar,menu)
+        val inflater: MenuInflater = menuInflater
+        inflater.inflate(R.menu.menu_action_bar, menu)
+        val menuItem: MenuItem? = menu.findItem(R.id.menu_search)
+        val view: View? = menuItem?.actionView
+        searchView = view as SearchView
+        searchView.setOnQueryTextListener(this)
         return true
     }
 
@@ -57,9 +60,11 @@ class MainActivity : BaseActivity(), SearchView.OnQueryTextListener,
             R.id.menu_category -> {
                 replaceFragment(CategoryFragment.newInstance(listener = this))
             }
-            R.id.menu_history -> {
+
+            R.id.menu_history ->{
                 replaceFragment(HistoryFragment.newInstance(listener = this))
             }
+
             R.id.menu_favorite -> {
                 replaceFragment(FavoritesFragment.newInstance(listener = this))
             }
@@ -91,11 +96,19 @@ class MainActivity : BaseActivity(), SearchView.OnQueryTextListener,
         TODO("Not yet implemented")
     }
 
-    override fun onQueryTextSubmit(p0: String?): Boolean {
-        TODO("Not yet implemented")
+    override fun onQueryTextSubmit(query: String?): Boolean {
+        query?.let {
+            val fragment: Fragment? = supportFragmentManager.findFragmentByTag(javaClass.simpleName)
+            fragment as OnSearchListener?
+            if (query.toString().isNotEmpty()) {
+                fragment?.onSearch(query = it)
+            }
+        }
+        return true
     }
 
-    override fun onQueryTextChange(p0: String?): Boolean {
-        TODO("Not yet implemented")
+
+    override fun onQueryTextChange(query: String?): Boolean {
+        return true
     }
 }

@@ -9,13 +9,14 @@ import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.saidov.cookbook.R
+import com.saidov.cookbook.core.callback.OnSearchListener
 import com.saidov.cookbook.core.callback.OnToolBarChangedListener
 import com.saidov.cookbook.core.fragment.BaseFragment
 import com.saidov.cookbook.modules.main.category.ui.adapter.ViewPagerAdapter
 import com.saidov.cookbook.modules.main.category.ui.model.TabLayoutModel
 import com.saidov.cookbook.modules.main.ui.vm.SharedViewModel
 
-class CategoryFragment : BaseFragment(R.layout.fragment_category) {
+class CategoryFragment : BaseFragment(R.layout.fragment_category), OnSearchListener {
 
     private lateinit var viewPagerAdapter: ViewPagerAdapter
     private lateinit var tabLayout: TabLayout
@@ -28,12 +29,12 @@ class CategoryFragment : BaseFragment(R.layout.fragment_category) {
         initData(view)
     }
 
-//    override fun onSearch(query: String) {
-//        if (isResumed) {
-//            val pageActive = pagerAdapter.getFragment(tabLayout.selectedTabPosition) as OnSearchListener
-//            pageActive.onSearch(query)
-//        }
-//    }
+    override fun onSearch(query: String) {
+        if (isResumed) {
+            val pageActive = viewPagerAdapter.getFragment(tabLayout.selectedTabPosition) as OnSearchListener
+            pageActive.onSearch(query)
+        }
+    }
 
     private fun initData(view: View) {
         tabLayout = view.findViewById(R.id.tabLayout)

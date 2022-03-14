@@ -2,7 +2,6 @@ package com.saidov.cookbook.repository.networkrepository.repo
 
 import com.saidov.cookbook.other.Constants.Companion.BASE_URL
 import com.saidov.cookbook.repository.networkrepository.api.DrinkService
-import com.saidov.cookbook.repository.networkrepository.interceptor.ApiKeyInterceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit

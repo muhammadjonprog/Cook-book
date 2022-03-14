@@ -39,7 +39,4 @@ interface DrinkService {
     @GET("list.php?c=list")
     suspend fun categoryList(): Response<CategoryModelList>
 
-
-    //    @GET("list.php?c=list")
-//    fun getCategories(): Call<CategoryList>
 }

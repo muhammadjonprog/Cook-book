@@ -5,11 +5,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.saidov.cookbook.core.viewmodel.BaseViewModel
 import com.saidov.cookbook.modules.main.settings.model.SettingsCategoryModel
-import com.saidov.cookbook.modules.main.ui.model.CategoryModelList
 import com.saidov.cookbook.modules.main.ui.model.DrinkModel
 import com.saidov.cookbook.modules.main.ui.model.DrinkResponse
-import com.saidov.cookbook.repository.networkrepository.event.Resource
-import kotlinx.coroutines.CoroutineExceptionHandler
+import com.saidov.cookbook.repository.networkrepository.event.Event
+
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -21,7 +20,11 @@ import kotlinx.coroutines.launch
 
 class SharedViewModel : BaseViewModel() {
 
-        private val mSettingsCategory = MutableLiveData<ArrayList<SettingsCategoryModel>>().apply {
+    private val mAll = MutableLiveData<List<DrinkModel>>()
+    val all: LiveData<List<DrinkModel>> = mAll
+
+
+    private val mSettingsCategory = MutableLiveData<ArrayList<SettingsCategoryModel>>().apply {
         val list: ArrayList<SettingsCategoryModel> = ArrayList()
         val ordinaryDrink = SettingsCategoryModel("Ordinary Drink", true)
         list.add(ordinaryDrink)
@@ -42,19 +45,20 @@ class SharedViewModel : BaseViewModel() {
 
         value = list
     }
-   var settingsCategory: MutableLiveData<ArrayList<SettingsCategoryModel>> = mSettingsCategory
+    var settingsCategory: MutableLiveData<ArrayList<SettingsCategoryModel>> = mSettingsCategory
 
 
-    private val mDrinkMutableHash = HashMap<String, MutableLiveData<Resource<DrinkResponse>>>()
-    val drinkLiveDataMap: Map<String, LiveData<Resource<DrinkResponse>>> = mDrinkMutableHash
+    private val mDrinkMutableHash = HashMap<String, MutableLiveData<Event<DrinkResponse>>>()
+    val drinkLiveDataMap: Map<String, LiveData<Event<DrinkResponse>>> = mDrinkMutableHash
 
-    private val mDrinkDetails = MutableLiveData<Resource<DrinkResponse>>()
-    val drinkDetails: LiveData<Resource<DrinkResponse>> = mDrinkDetails
+
+    private val mDrinkDetails = MutableLiveData<Event<DrinkResponse>>()
+    val drinkDetails: LiveData<Event<DrinkResponse>> = mDrinkDetails
 
 
     fun addToHash(key: String) {
         if (mDrinkMutableHash[key] == null) {
-            mDrinkMutableHash[key] = MutableLiveData<Resource<DrinkResponse>>()
+            mDrinkMutableHash[key] = MutableLiveData<Event<DrinkResponse>>()
         }
     }
 
@@ -65,53 +69,79 @@ class SharedViewModel : BaseViewModel() {
     }
 
 
-
-
-    fun categoryList() {
-        val coroutineExceptionHandler = CoroutineExceptionHandler { _, throwable ->
-            throwable.printStackTrace()
-        }
-
-//        viewModelScope.launch(Dispatchers.IO + coroutineExceptionHandler) {
-//            val response = network.getApi().categoryList()
-//            asyncRequest(liveData = mSettingsCategory, response = response)
-//        }
-    }
-
     fun drinkByCategory(category: String) {
-        val coroutineExceptionHandler = CoroutineExceptionHandler { _, throwable ->
-            throwable.printStackTrace()
-        }
-        viewModelScope.launch(Dispatchers.IO + coroutineExceptionHandler) {
-            val livedata = mDrinkMutableHash[category]
-            val response = network.getApi().getDrinkByCategory(category = category)
-            asyncRequest(liveData = livedata, response = response)
-
+        val liveData = mDrinkMutableHash[category]
+        asyncRequest(liveData) {
+                network.getApi().getDrinkByCategory(category)
         }
     }
 
 
     fun drinkById(id: Long?) {
-        val coroutineExceptionHandler = CoroutineExceptionHandler { _, throwable ->
-            throwable.printStackTrace()
-        }
-
-        viewModelScope.launch(Dispatchers.IO + coroutineExceptionHandler) {
-//            val liveData = mDrinkMutableHash[category]
-            val response = network.getApi().getDrinkById(id = id)
-            asyncRequest(liveData = mDrinkDetails, response = response)
+        asyncRequest(mDrinkDetails) {
+            network.getApi().getDrinkById(id = id)
         }
     }
 
 
-    fun searchByDrinkName(query: String) {
-        val coroutineExceptionHandler = CoroutineExceptionHandler { _, throwable ->
-            throwable.printStackTrace()
+    fun searchByDrinkName(query: String, category: String) {
+        val livedata = mDrinkMutableHash[category]
+        asyncRequest(livedata) {
+            network.getApi().searchDrinkByName(query)
         }
-        viewModelScope.launch(Dispatchers.IO + coroutineExceptionHandler) {
-            val livedata = mDrinkMutableHash[query]
-            val response = network.getApi().searchDrinkByName(query)
-            asyncRequest(liveData = livedata, response = response)
+    }
+
+    fun add(drinkModel: DrinkModel) {
+        viewModelScope.launch {
+            db.addDrink(drinkModel)
+        }
+    }
+
+    fun loadHistory() {
+        viewModelScope.launch(Dispatchers.IO) {
+            val result = db.getAllHistory()
+            mAll.postValue(result)
+        }
+    }
+
+    fun loadFav() {
+        viewModelScope.launch(Dispatchers.IO) {
+            val result = db.getAllFav()
+            mAll.postValue(result)
+        }
+    }
+
+
+
+    fun updateFav(drinkModel: DrinkModel) {
+        viewModelScope.launch(Dispatchers.IO) {
+            db.updateFav(drinkModel)
+            loadFav()
+        }
+    }
+
+
+
+    fun updateHis(drinkModel: DrinkModel) {
+        viewModelScope.launch(Dispatchers.IO) {
+            db.updateHis(drinkModel)
+            loadHistory()
+        }
+    }
+
+
+    fun search(query: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val result = db.search(query)
+            mAll.postValue(result)
+        }
+    }
+
+
+    fun delete(drinkModel: DrinkModel) {
+        viewModelScope.launch(Dispatchers.IO) {
+            db.delete(drinkModel)
+            loadHistory()
         }
     }
 }

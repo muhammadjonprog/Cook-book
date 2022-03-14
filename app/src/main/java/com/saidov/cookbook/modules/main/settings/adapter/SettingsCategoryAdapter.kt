@@ -7,8 +7,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.checkbox.MaterialCheckBox
 import com.saidov.cookbook.R
 import com.saidov.cookbook.modules.main.settings.model.SettingsCategoryModel
-import com.saidov.cookbook.modules.main.ui.model.CategoryModelList
-import com.saidov.cookbook.repository.networkrepository.event.Resource
 
 
 /**
